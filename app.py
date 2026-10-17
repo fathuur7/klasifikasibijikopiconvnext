@@ -42,23 +42,9 @@ with st.sidebar:
     st.markdown(f"**Akselerator Device:** `{DEVICE.upper()}`")
     show_flat = st.checkbox("Tampilkan Pembanding Model FLAT", value=True)
 
-    st.markdown("---")
-    st.subheader("Sumber Bobot (Dynamic Source)")
-    source_mode = st.radio(
-        "Pilih Sumber Unduhan:",
-        ["Hugging Face Hub (Prioritas Cloud)", "Folder Lokal Komputer"],
-        index=0,
-        help="Pilih apakah model diunduh dinamis dari Hugging Face atau membaca folder lokal."
-    )
-
-    if source_mode.startswith("Hugging"):
-        active_repo = HF_DEFAULT_REPO
-        active_token = HF_DEFAULT_TOKEN
-        st.caption(f"📦 **Model Hub:** `{active_repo}`")
-    else:
-        active_repo = ""
-        active_token = None
-        st.info(f"📁 **Folder Lokal:** `{MODEL_DIR.name}`")
+    # Pengunduhan model dinamis di latar belakang (Hugging Face Hub + Fallback Lokal)
+    active_repo = HF_DEFAULT_REPO
+    active_token = HF_DEFAULT_TOKEN
 
     st.markdown("---")
     st.subheader("Ringkasan Metrik Riset (OOF)")
