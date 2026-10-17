@@ -1,0 +1,8 @@
+streamlit>=1.36
+torch
+torchvision
+timm
+pillow
+huggingface_hub
+pandas
+plotly
