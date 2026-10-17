@@ -18,17 +18,27 @@ from torchvision import transforms
 # ============================================================
 # KONFIGURASI  (sesuaikan dengan folder dan urutan kelas Anda)
 # ============================================================
-# Gunakan raw string (r"...") untuk path Windows, supaya "\01_" tidak dibaca sebagai karakter escape.
-# File .pth dicari otomatis di semua subfolder (CASCADE, FLAT, dst), tidak perlu dipindah/disalin.
-MODEL_DIR = Path(r"D:\MASTER_FINAL_CONVNEXT_CLASSIFIER\MASTER_FINAL_CONVNEXT_CLASSIFIER\01_Model_Weights_Final")
-ASSETS_DIR = Path(r"D:\MASTER_FINAL_CONVNEXT_CLASSIFIER\MASTER_FINAL_CONVNEXT_CLASSIFIER\02_Reports_and_Metrics")
-DATASET_DIR = Path(r"D:\MASTER_FINAL_CONVNEXT_CLASSIFIER\MASTER_FINAL_CONVNEXT_CLASSIFIER\Dataset\Dataset_Original")
+# Gunakan list path lokal agar otomatis mendeteksi folder riset lokal jika ada, atau fallback ke Hugging Face saat cloud deploy.
+LOCAL_MODEL_DIRS = [
+    Path(r"d:\Riset_Mbkm_2026\MASTER_FINAL_CONVNEXT_CLASSIFIER\01_Model_Weights_Final"),
+    Path(r"D:\MASTER_FINAL_CONVNEXT_CLASSIFIER\MASTER_FINAL_CONVNEXT_CLASSIFIER\01_Model_Weights_Final"),
+    Path(__file__).resolve().parent / "01_Model_Weights_Final",
+]
+MODEL_DIR = next((p for p in LOCAL_MODEL_DIRS if p.exists()), LOCAL_MODEL_DIRS[0])
 
-# Jika folder lokal di atas tidak ada (misalnya saat di-deploy), pakai folder kecil di dalam repo.
-if not DATASET_DIR.exists():
-    DATASET_DIR = Path("sampel")      # isi dengan beberapa gambar contoh: Varietas/Sangrai/gambar.jpg
-if not ASSETS_DIR.exists():
-    ASSETS_DIR = Path("assets")       # isi: assets/CASCADE/*confusion*.png dan assets/FLAT/*confusion*.png
+LOCAL_ASSET_DIRS = [
+    Path(r"d:\Riset_Mbkm_2026\MASTER_FINAL_CONVNEXT_CLASSIFIER\02_Reports_and_Metrics"),
+    Path(r"D:\MASTER_FINAL_CONVNEXT_CLASSIFIER\MASTER_FINAL_CONVNEXT_CLASSIFIER\02_Reports_and_Metrics"),
+    Path(__file__).resolve().parent / "assets",
+]
+ASSETS_DIR = next((p for p in LOCAL_ASSET_DIRS if p.exists()), Path("assets"))
+
+LOCAL_DATASET_DIRS = [
+    Path(r"d:\Riset_Mbkm_2026\PROJECT_1V\Dataset_Split\test"),
+    Path(r"D:\MASTER_FINAL_CONVNEXT_CLASSIFIER\MASTER_FINAL_CONVNEXT_CLASSIFIER\Dataset\Dataset_Original"),
+    Path(__file__).resolve().parent / "sampel",
+]
+DATASET_DIR = next((p for p in LOCAL_DATASET_DIRS if p.exists()), Path("sampel"))
 
 HF_REPO_ID = os.getenv(
     "HF_REPO_ID",
@@ -98,7 +108,7 @@ TRANSFORM = transforms.Compose(
 )
 
 
-def _build_model(num_classes: int, backend: str) -> nn.Module:
+def _build_model(num_classes: int, backend: str, custom_head: bool = True) -> nn.Module:
     if backend == "torchvision":
         from torchvision.models import convnext_tiny
 
@@ -107,7 +117,17 @@ def _build_model(num_classes: int, backend: str) -> nn.Module:
         return m
     import timm
 
-    return timm.create_model("convnext_tiny", pretrained=False, num_classes=num_classes)
+    m = timm.create_model("convnext_tiny", pretrained=False, num_classes=num_classes, drop_rate=0.3)
+    if custom_head:
+        in_features = m.head.fc.in_features
+        m.head.fc = nn.Sequential(
+            nn.Linear(in_features, 512),
+            nn.LayerNorm(512),
+            nn.GELU(),
+            nn.Dropout(0.3),
+            nn.Linear(512, num_classes),
+        )
+    return m
 
 
 def _extract_state_dict(ckpt):
@@ -150,10 +170,13 @@ def load_model(file_name: str, num_classes: int, device_str: str) -> nn.Module:
         return ckpt.to(device_str).eval()
 
     state = _extract_state_dict(ckpt)
+    has_custom_head = any("head.fc.0" in k for k in state.keys())
+    backends_to_try = [("timm", True)] if has_custom_head else [("timm", False), ("torchvision", False), ("timm", True)]
+    
     last_err = None
-    for backend in ("torchvision", "timm"):
+    for backend, is_custom in backends_to_try:
         try:
-            model = _build_model(num_classes, backend)
+            model = _build_model(num_classes, backend, custom_head=is_custom)
             model.load_state_dict(state, strict=True)
             return model.to(device_str).eval()
         except Exception as e:  # coba backend berikutnya
