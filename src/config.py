@@ -18,9 +18,25 @@ IMG_EXT = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 # ==============================================================================
 # 2. PENGATURAN AUTENTIKASI HUGGING FACE DARI STREAMLIT SECRETS
 # ==============================================================================
+def _read_secret_file(key: str) -> str | None:
+    """Membaca kunci dari .streamlit/secrets.toml secara langsung."""
+    for sp in [
+        Path(__file__).resolve().parent.parent / ".streamlit" / "secrets.toml",
+        Path(r"d:\Riset_Mbkm_2026\klasifikasibijikopiconvnext\.streamlit\secrets.toml"),
+    ]:
+        if sp.exists():
+            try:
+                for line in sp.read_text(encoding="utf-8").splitlines():
+                    clean = line.strip()
+                    if clean.startswith(key) and "=" in clean:
+                        return clean.split("=", 1)[1].strip().strip('"\'')
+            except Exception:
+                pass
+    return None
+
 def load_hf_token() -> str | None:
     """Mengambil token autentikasi Hugging Face secara aman dari Streamlit Secrets, Env, atau file token."""
-    # 1. Cek Streamlit Secrets (.streamlit/secrets.toml atau Streamlit Cloud Secrets)
+    # 1. Cek Streamlit Secrets API
     try:
         if hasattr(st, "secrets") and "HF_TOKEN" in st.secrets:
             val = str(st.secrets["HF_TOKEN"]).strip()
@@ -29,12 +45,17 @@ def load_hf_token() -> str | None:
     except Exception:
         pass
 
-    # 2. Cek Environment Variable
+    # 2. Cek file .streamlit/secrets.toml langsung
+    file_token = _read_secret_file("HF_TOKEN")
+    if file_token:
+        return file_token
+
+    # 3. Cek Environment Variable
     token = os.getenv("HF_TOKEN")
     if token:
         return token.strip()
 
-    # 3. Cek file lokal hf_write_token.txt
+    # 4. Cek file lokal hf_write_token.txt
     for tp in [
         Path(__file__).resolve().parent.parent / "hf_write_token.txt",
         Path(r"d:\Riset_Mbkm_2026\hf_write_token.txt"),
@@ -55,6 +76,9 @@ def load_hf_repo() -> str:
                 return val
     except Exception:
         pass
+    file_repo = _read_secret_file("HF_REPO_ID")
+    if file_repo:
+        return file_repo
     return os.getenv("HF_REPO_ID", "turasa22/klasifikasibijikopiconvnext")
 
 HF_DEFAULT_REPO = load_hf_repo()

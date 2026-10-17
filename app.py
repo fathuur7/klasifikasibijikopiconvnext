@@ -52,23 +52,13 @@ with st.sidebar:
     )
 
     if source_mode.startswith("Hugging"):
-        hf_repo_input = st.text_input("Repository ID:", value=HF_DEFAULT_REPO)
-        hf_token_input = st.text_input(
-            "Access Token Hugging Face:",
-            value=HF_DEFAULT_TOKEN or "",
-            type="password",
-            help="Otomatis dimuat dari Streamlit Secrets (.streamlit/secrets.toml atau Secrets Cloud)."
-        )
-        active_repo = hf_repo_input.strip()
-        active_token = hf_token_input.strip() or None
-        if active_token:
-            st.caption("🔒 Status Token: Terautentikasi (Streamlit Secrets Aktif)")
-        else:
-            st.caption("🌐 Status Token: Akses Repositori Publik")
+        active_repo = HF_DEFAULT_REPO
+        active_token = HF_DEFAULT_TOKEN
+        st.caption(f"📦 **Model Hub:** `{active_repo}`")
     else:
         active_repo = ""
         active_token = None
-        st.info(f"Folder Lokal: `{MODEL_DIR.name}`")
+        st.info(f"📁 **Folder Lokal:** `{MODEL_DIR.name}`")
 
     st.markdown("---")
     st.subheader("Ringkasan Metrik Riset (OOF)")
