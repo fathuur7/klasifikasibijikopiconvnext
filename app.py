@@ -54,17 +54,17 @@ with st.sidebar:
     if source_mode.startswith("Hugging"):
         hf_repo_input = st.text_input("Repository ID:", value=HF_DEFAULT_REPO)
         hf_token_input = st.text_input(
-            "Access Token (Otomatis dari Cookies):",
+            "Access Token Hugging Face:",
             value=HF_DEFAULT_TOKEN or "",
             type="password",
-            help="Terisi otomatis dari cookies_huggingface.txt jika tersedia."
+            help="Otomatis dimuat dari Streamlit Secrets (.streamlit/secrets.toml atau Secrets Cloud)."
         )
         active_repo = hf_repo_input.strip()
         active_token = hf_token_input.strip() or None
         if active_token:
-            st.caption("Status Token: Terautentikasi (Token Aktif)")
+            st.caption("🔒 Status Token: Terautentikasi (Streamlit Secrets Aktif)")
         else:
-            st.caption("Status Token: Akses Repositori Publik")
+            st.caption("🌐 Status Token: Akses Repositori Publik")
     else:
         active_repo = ""
         active_token = None

@@ -16,49 +16,48 @@ MEAN, STD = [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
 IMG_EXT = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 
 # ==============================================================================
-# 2. PENGATURAN AUTENTIKASI HUGGING FACE SECARA DINAMIS
+# 2. PENGATURAN AUTENTIKASI HUGGING FACE DARI STREAMLIT SECRETS
 # ==============================================================================
 def load_hf_token() -> str | None:
-    """Mengambil token autentikasi Hugging Face secara dinamis dari file token, env, secrets, atau cookies."""
-    # 1. Cek file hf_write_token.txt
+    """Mengambil token autentikasi Hugging Face secara aman dari Streamlit Secrets, Env, atau file token."""
+    # 1. Cek Streamlit Secrets (.streamlit/secrets.toml atau Streamlit Cloud Secrets)
+    try:
+        if hasattr(st, "secrets") and "HF_TOKEN" in st.secrets:
+            val = str(st.secrets["HF_TOKEN"]).strip()
+            if val:
+                return val
+    except Exception:
+        pass
+
+    # 2. Cek Environment Variable
+    token = os.getenv("HF_TOKEN")
+    if token:
+        return token.strip()
+
+    # 3. Cek file lokal hf_write_token.txt
     for tp in [
-        Path(r"d:\Riset_Mbkm_2026\hf_write_token.txt"),
         Path(__file__).resolve().parent.parent / "hf_write_token.txt",
+        Path(r"d:\Riset_Mbkm_2026\hf_write_token.txt"),
     ]:
         if tp.exists():
             val = tp.read_text(encoding="utf-8").strip()
             if val:
                 return val
 
-    # 2. Cek Environment Variable
-    token = os.getenv("HF_TOKEN")
-    if token:
-        return token
-
-    # 3. Cek Streamlit Secrets
-    try:
-        if hasattr(st, "secrets") and "HF_TOKEN" in st.secrets:
-            return st.secrets["HF_TOKEN"]
-    except Exception:
-        pass
-
-    # 4. Cek cookies_huggingface.txt
-    for cp in [
-        Path(__file__).resolve().parent.parent / "cookies_huggingface.txt",
-        Path(r"d:\Riset_Mbkm_2026\cookies_huggingface.txt"),
-    ]:
-        if cp.exists():
-            try:
-                with open(cp, "r", encoding="utf-8") as f:
-                    cookies = json.load(f)
-                    for c in cookies:
-                        if c.get("name") == "token" and c.get("value"):
-                            return c["value"]
-            except Exception:
-                pass
     return None
 
-HF_DEFAULT_REPO = os.getenv("HF_REPO_ID", "turasa22/klasifikasibijikopiconvnext")
+def load_hf_repo() -> str:
+    """Mengambil Repository ID dari Streamlit Secrets, Env, atau default."""
+    try:
+        if hasattr(st, "secrets") and "HF_REPO_ID" in st.secrets:
+            val = str(st.secrets["HF_REPO_ID"]).strip()
+            if val:
+                return val
+    except Exception:
+        pass
+    return os.getenv("HF_REPO_ID", "turasa22/klasifikasibijikopiconvnext")
+
+HF_DEFAULT_REPO = load_hf_repo()
 HF_DEFAULT_TOKEN = load_hf_token()
 
 # ==============================================================================
