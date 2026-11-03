@@ -1,0 +1,17 @@
+True_Class,Arabika_Dark,Arabika_Green,Arabika_Light,Arabika_Medium,Ekselsa_Dark,Ekselsa_Green,Ekselsa_Light,Ekselsa_Medium,Liberika_Dark,Liberika_Green,Liberika_Light,Liberika_Medium,Robusta_Dark,Robusta_Green,Robusta_Light,Robusta_Medium
+Arabika_Dark,97,0,0,2,0,0,0,0,1,0,0,0,0,0,0,0
+Arabika_Green,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Arabika_Light,0,0,95,5,0,0,0,0,0,0,0,0,0,0,0,0
+Arabika_Medium,1,0,0,98,0,0,0,0,0,0,0,0,0,0,1,0
+Ekselsa_Dark,0,0,0,0,72,0,0,0,26,0,0,0,1,0,0,1
+Ekselsa_Green,0,0,0,0,0,97,0,0,0,2,0,0,0,1,0,0
+Ekselsa_Light,0,0,0,0,0,0,94,1,0,0,3,1,0,1,0,0
+Ekselsa_Medium,0,0,0,0,0,0,1,87,0,0,1,9,0,0,2,0
+Liberika_Dark,0,0,0,0,18,0,0,0,80,0,0,0,1,0,0,1
+Liberika_Green,0,0,0,0,0,1,0,0,0,99,0,0,0,0,0,0
+Liberika_Light,0,0,0,0,0,0,2,1,0,0,90,7,0,0,0,0
+Liberika_Medium,0,0,0,0,0,0,0,8,0,0,5,86,0,0,1,0
+Robusta_Dark,0,0,0,0,0,0,0,0,2,0,0,0,97,0,0,1
+Robusta_Green,0,0,0,0,0,0,0,0,0,0,0,0,0,100,0,0
+Robusta_Light,0,0,0,0,0,0,0,0,0,0,0,1,0,0,97,2
+Robusta_Medium,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,99
