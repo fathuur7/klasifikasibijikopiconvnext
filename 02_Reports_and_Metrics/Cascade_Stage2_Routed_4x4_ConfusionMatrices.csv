@@ -1,0 +1,36 @@
+Specialist_Model,Evaluation_Protocol,True_Roast,Pred_Dark,Pred_Green,Pred_Light,Pred_Medium,Total_Samples,Accuracy_Pct
+M2_Arabica,Routed_Stage1 (N=400),Dark,99,0,0,1,100,99.00
+M2_Arabica,Routed_Stage1 (N=400),Green,0,100,0,0,100,100.00
+M2_Arabica,Routed_Stage1 (N=400),Light,0,0,100,0,100,100.00
+M2_Arabica,Routed_Stage1 (N=400),Medium,1,0,0,99,100,99.00
+M2_Arabica,Routed_Stage1_Total,All_Roasts,100,100,100,100,400,99.50
+M2_Excelsa,Routed_Stage1 (N=354),Dark,72,0,0,0,72,100.00
+M2_Excelsa,Routed_Stage1 (N=354),Green,0,88,0,0,88,100.00
+M2_Excelsa,Routed_Stage1 (N=354),Light,0,0,99,0,99,100.00
+M2_Excelsa,Routed_Stage1 (N=354),Medium,0,0,3,92,95,96.84
+M2_Excelsa,Routed_Stage1_Total,All_Roasts,72,88,102,92,354,99.15
+M2_Excelsa,Oracle_TrueVariety (N=400),Dark,100,0,0,0,100,100.00
+M2_Excelsa,Oracle_TrueVariety (N=400),Green,0,100,0,0,100,100.00
+M2_Excelsa,Oracle_TrueVariety (N=400),Light,0,0,100,0,100,100.00
+M2_Excelsa,Oracle_TrueVariety (N=400),Medium,0,0,3,97,100,97.00
+M2_Excelsa,Oracle_TrueVariety_Total,All_Roasts,100,100,103,97,400,99.25
+M2_Liberica,Routed_Stage1 (N=369),Dark,79,0,0,0,79,100.00
+M2_Liberica,Routed_Stage1 (N=369),Green,0,97,0,0,97,100.00
+M2_Liberica,Routed_Stage1 (N=369),Light,0,0,96,2,98,97.96
+M2_Liberica,Routed_Stage1 (N=369),Medium,0,0,3,92,95,96.84
+M2_Liberica,Routed_Stage1_Total,All_Roasts,79,97,99,94,369,98.64
+M2_Liberica,Oracle_TrueVariety (N=400),Dark,100,0,0,0,100,100.00
+M2_Liberica,Oracle_TrueVariety (N=400),Green,0,100,0,0,100,100.00
+M2_Liberica,Oracle_TrueVariety (N=400),Light,0,0,98,2,100,98.00
+M2_Liberica,Oracle_TrueVariety (N=400),Medium,0,0,3,97,100,97.00
+M2_Liberica,Oracle_TrueVariety_Total,All_Roasts,100,100,101,99,400,98.75
+M2_Robusta,Routed_Stage1 (N=398),Dark,100,0,0,0,100,100.00
+M2_Robusta,Routed_Stage1 (N=398),Green,0,99,0,0,99,100.00
+M2_Robusta,Routed_Stage1 (N=398),Light,0,0,97,2,99,97.98
+M2_Robusta,Routed_Stage1 (N=398),Medium,0,0,0,100,100,100.00
+M2_Robusta,Routed_Stage1_Total,All_Roasts,100,99,97,102,398,99.50
+M2_Robusta,Oracle_TrueVariety (N=400),Dark,100,0,0,0,100,100.00
+M2_Robusta,Oracle_TrueVariety (N=400),Green,0,100,0,0,100,100.00
+M2_Robusta,Oracle_TrueVariety (N=400),Light,0,0,98,2,100,98.00
+M2_Robusta,Oracle_TrueVariety (N=400),Medium,0,0,0,100,100,100.00
+M2_Robusta,Oracle_TrueVariety_Total,All_Roasts,100,100,98,102,400,99.50

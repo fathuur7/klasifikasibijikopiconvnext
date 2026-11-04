@@ -1,0 +1,6 @@
+True_Variety,Pred_Arabica,Pred_Excelsa,Pred_Liberica,Pred_Robusta,Total,Recall_Pct
+Arabica,400,0,0,0,400,100.00
+Excelsa,0,354,37,9,400,88.50
+Liberica,0,27,369,4,400,92.25
+Robusta,0,0,2,398,400,99.50
+Total_Predicted,400,381,408,411,1600,95.06

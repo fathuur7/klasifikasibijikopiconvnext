@@ -1,0 +1,13 @@
+Configuration,Backbone_Count,Params_M,Fold1_Acc,Fold2_Acc,Fold3_Acc,Fold4_Acc,Fold5_Acc,Mean_Acc_Pct,SD_Acc_Pct,Macro_F1_Pct,Notes
+1x_Flat_Baseline_Headline,1,28.22,91.88,94.06,93.12,93.12,92.81,93.00,0.78,92.97,Same-fold 1-epoch peak-accuracy selection
+1x_MultiHead_Factorized_Control,1,28.61,92.81,94.69,93.75,93.75,93.12,93.62,0.72,93.60,5-seed head stability: 93.65 +/- 0.11%
+2x_Flat_Ensemble_Control,2,56.44,95.00,93.75,94.38,94.06,94.38,94.31,0.46,94.29,"Equal-capacity 2x Flat Ensemble (ties Cascade 94.31%, p=1.000)"
+5x_Cascade_Proposed_Headline,5,141.08,95.31,93.75,94.06,94.06,94.38,94.31,0.60,94.21,"2x active per sample (56.44M, Hard k=1); McNemar exact p=0.0527, bootstrap p=0.0434"
+5x_Cascade_Top2_SoftRouting,5,141.08,95.31,93.75,94.06,94.06,94.38,94.31,0.60,94.21,"3x active per sample (84.66M, Top-2 k=2); identical 1,509/1,600 predictions to Hard k=1"
+5x_Cascade_Full_SoftRouting_Eq3,5,141.08,95.31,93.75,94.06,94.06,94.38,94.31,0.60,94.21,"5x active per sample (141.08M, Soft-4 k=4 Eq. 3); identical 1,509/1,600 predictions to Hard k=1"
+1x_Flat_5EpochGrid_LossSelected,1,28.22,90.62,90.62,92.50,90.31,91.56,91.12,0.58,91.10,Same-fold 5-epoch grid min-loss selection
+5x_Cascade_5EpochGrid_LossSelected,5,141.08,93.75,92.81,93.44,91.25,93.00,92.85,0.71,92.84,Same-fold 5-epoch grid min-loss selection (Delta=+1.73 pp)
+1x_Flat_Nested_LOFO_AccSelected,1,28.22,87.81,90.00,89.06,89.69,90.62,89.44,1.05,89.41,Selection-decoupled Leave-One-Fold-Out (5-epoch grid)
+5x_Cascade_Nested_LOFO_AccSelected,5,141.08,89.06,91.56,91.25,91.25,93.06,91.24,1.43,91.22,"Selection-decoupled LOFO (Delta=+1.81 pp, p=0.0099)"
+1x_Flat_Nested_LOFO_LossSelected,1,28.22,87.81,90.00,88.44,88.12,90.62,89.00,1.13,88.97,Selection-decoupled LOFO min-loss (5-epoch grid)
+5x_Cascade_Nested_LOFO_LossSelected,5,141.08,90.00,91.56,90.31,90.31,92.12,90.86,0.85,90.84,"Selection-decoupled LOFO min-loss (Delta=+1.86 pp, p=0.0054)"
